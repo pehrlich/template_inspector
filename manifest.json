@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "Template Inspector",
+  "description": "Allows you to right click -> 'Inspect Template'.",
+  "version": "0.1",
+  "permissions": [
+    "contextMenus"
+  ],
+  "background": {
+     "scripts": ["background.js"]
+   },
+  "content_scripts": [{
+    "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*"],
+    "js": ["content_script.js"]
+  }]
+}
