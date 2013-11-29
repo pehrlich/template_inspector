@@ -1,0 +1,50 @@
+<html>
+<head>
+  <script type="text/javascript" src="js/lib/angular.js"></script>
+  <script type="text/javascript" src="js/lib/leap.js"></script>
+  <script type="text/javascript" src="js/core_ext.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/factories.js"></script>
+  <script type="text/javascript" src="js/directives.js"></script>
+  <link href="leap.css" rel="stylesheet">
+</head>
+
+<body ng-app="TemplateInspector" data-ng-controller="LeapController" ng-keypress="keypress($event)">
+
+
+<!-- <div ng-repeat="hand in hands" hand="hand" class="hand"></div> -->
+<!-- todo: properly handle multiple hands, keep track of ids, and so on. -->
+<div data-hand class="hand"></div>
+
+
+<h2>Stuff Goes here</h2>
+
+<p>
+  etc
+</p>
+
+<table id="data" ng-show="hud">
+  <tr>
+    <td>
+      Hands
+    </td>
+    <td>
+      {{hands.length}}
+      <br>
+      {{palmPosition}}
+    </td>
+  </tr>
+  <tr ng-repeat="hand in hands">
+    <td>
+      {{hand.id}}
+    </td>
+    <td>
+      {{hand.palmPosition}}
+      <br>
+      {{[hand.pitch().toPrecision(2), hand.roll().toPrecision(2), hand.yaw().toPrecision(2)]}}
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

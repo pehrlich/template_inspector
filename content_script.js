@@ -1,11 +1,81 @@
+var controller = new Leap.Controller();
+
+
+controller.on('connect', function() {
+  console.log("Successfully connected.");
+});
+
+controller.on('deviceConnected', function() {
+  console.log("A Leap device has been connected.");
+});
+
+controller.on('deviceDisconnected', function() {
+  console.log("A Leap device has been disconnected.");
+});
+
+
+controller.on('frame', function() {
+  console.log('frame', this, arguments);
+  // your code here
+});
+
+
+controller.connect();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // This content script
 // a) Listens to the menu opened event, and determines the closest parent template.
 // b) sends a message to the background enabling or disabling the menu
 // c) receives messages to launch an external editor
 
-console.log('content_script');
 window.path = undefined;
 
+// http://developer.chrome.com/extensions/contextMenus.html
 document.addEventListener("contextmenu", function (event) {
   var indicator = closestTemplateIndicator(event.target);
   window.path = indicator.substringData(14, 256);

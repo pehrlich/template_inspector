@@ -12,6 +12,6 @@
    },
   "content_scripts": [{
     "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*"],
-    "js": ["content_script.js"]
+    "js": ["content_script.js", "leap.js"]
   }]
 }
