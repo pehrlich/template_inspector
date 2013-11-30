@@ -20,13 +20,13 @@
         }
       };
       Leap.on('foundHand', function(id) {
-        console.log('found hand');
+        console.log('found hand', id);
         $scope.hand_elements[id] = angular.element("<div data-hand='" + id + "' class='hand'></div>");
         angular.element(document.body).append($scope.hand_elements[id]);
         return $compile($scope.hand_elements[id])($scope);
       });
       Leap.on('lostHand', function(id) {
-        console.log('lost hand');
+        console.log('lost hand', id);
         return $scope.hand_elements[id].remove();
       });
       Leap.on("frame", function() {

@@ -19,13 +19,13 @@ app.controller "LeapController", ["$scope", "Leap", "$rootScope", '$compile', ($
 
 
   Leap.on 'foundHand', (id)->
-    console.log 'found hand'
+    console.log 'found hand', id
     $scope.hand_elements[id] = angular.element("<div data-hand='#{id}' class='hand'></div>")
     angular.element(document.body).append $scope.hand_elements[id]
     $compile($scope.hand_elements[id])($scope);
 
   Leap.on 'lostHand', (id)->
-    console.log 'lost hand'
+    console.log 'lost hand', id
     $scope.hand_elements[id].remove()
 
   Leap.on "frame", ->

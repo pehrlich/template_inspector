@@ -23,6 +23,13 @@
         link: function(scope, elem, attrs) {
           scope.open = void 0;
           scope.old_open_percent = void 0;
+          elem.bind('$destroy', function() {
+            console.log('element destroyed');
+            return scope.$destroy();
+          });
+          scope.$on('$destroy', function() {
+            return console.log('scope destroyed');
+          });
           scope.$watch(function() {
             return Leap.lastValidFrame.hands;
           }, function(newHands, oldHands) {
@@ -51,7 +58,6 @@
             }
           };
           return scope.setPosition = function() {
-            console.log('set position');
             elem[0].style.left = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale) + "px";
             return elem[0].style.top = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px";
           };

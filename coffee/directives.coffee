@@ -24,6 +24,16 @@ app.directive('hand', ['Leap', (Leap)->
     scope.open = undefined
     scope.old_open_percent = undefined
 
+
+    # For whatever reason, Angular isin't properly destroying this scope when the element is removed.
+    # we trigger it manually here.
+    elem.bind '$destroy', ->
+      console.log 'element destroyed'
+      scope.$destroy()
+    scope.$on '$destroy', ->
+      console.log 'scope destroyed'
+
+
     scope.$watch ()->
       Leap.lastValidFrame.hands
     , (newHands, oldHands)->
@@ -52,7 +62,6 @@ app.directive('hand', ['Leap', (Leap)->
           scope.$emit('open', scope.hand)
 
     scope.setPosition = ->
-      console.log 'set position'
       elem[0].style.left = (document.body.offsetWidth / 2) +
       (scope.hand.palmPosition[0] * position_constants.scale) + "px"
       elem[0].style.top = (document.body.offsetHeight / 2) +
