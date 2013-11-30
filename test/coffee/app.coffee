@@ -38,4 +38,11 @@ app.controller "LeapController", ["$scope", "Leap", "$rootScope", ($scope, Leap,
     $scope.hands = Leap.lastValidFrame.hands
     $scope.$digest()
     $scope.working = false
+
+
+  $scope.$on 'open', (scope, data)->
+    console.log 'open', data
+
+  $scope.$on 'close', (scope, data)->
+    console.log 'close', data
 ]

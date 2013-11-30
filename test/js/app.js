@@ -24,7 +24,7 @@
           return console.log('style controller called');
         };
       };
-      return Leap.on("frame", function() {
+      Leap.on("frame", function() {
         if (Leap.paused) {
           return;
         }
@@ -36,6 +36,12 @@
         $scope.hands = Leap.lastValidFrame.hands;
         $scope.$digest();
         return $scope.working = false;
+      });
+      $scope.$on('open', function(scope, data) {
+        return console.log('open', data);
+      });
+      return $scope.$on('close', function(scope, data) {
+        return console.log('close', data);
       });
     }
   ]);
