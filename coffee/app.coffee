@@ -1,11 +1,12 @@
 window.app = angular.module("TemplateInspector", [])
 
-app.controller "LeapController", ["$scope", "Leap", "$rootScope", ($scope, Leap, $rootScope) ->
-  $scope.hands = []
+app.controller "LeapController", ["$scope", "Leap", "$rootScope", '$compile', ($scope, Leap, $rootScope, $compile) ->
   $scope.heightOffset = 0
-  $scope.paused = false
   $scope.working = false
   $scope.hud = true
+
+  # as we don't have access to the DOM in a chrome extension content script, we track appended elements here.
+  $scope.hand_elements = {}
 
   $scope.keypress = (event) ->
     switch event.keyCode
@@ -17,8 +18,15 @@ app.controller "LeapController", ["$scope", "Leap", "$rootScope", ($scope, Leap,
         $rootScope.$broadcast('hud', $scope.hud)
 
 
-    $scope.style = ->
-      console.log('style controller called')
+  Leap.on 'foundHand', (id)->
+    console.log 'found hand'
+    $scope.hand_elements[id] = angular.element("<div data-hand='#{id}' class='hand'></div>")
+    angular.element(document.body).append $scope.hand_elements[id]
+    $compile($scope.hand_elements[id])($scope);
+
+  Leap.on 'lostHand', (id)->
+    console.log 'lost hand'
+    $scope.hand_elements[id].remove()
 
   Leap.on "frame", ->
     return  if Leap.paused
@@ -28,14 +36,6 @@ app.controller "LeapController", ["$scope", "Leap", "$rootScope", ($scope, Leap,
       return
 
     $scope.working = true
-#    for hand in $scope.hands
-#      unless Leap.lastValidFrame.hands.map((hand) -> hand.id).includes(hand.id)
-#        $rootScope.$broadcast('handLost')
-#        console.log('hand lost')
-#    if $scope.hands.map((hand)-> hand.id) != Leap.lastValidFrame.hands.map((hand)-> hand.id)
-#      console.log('hand change')
-
-    $scope.hands = Leap.lastValidFrame.hands
     $scope.$digest()
     $scope.working = false
 

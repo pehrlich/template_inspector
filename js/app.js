@@ -3,27 +3,32 @@
   window.app = angular.module("TemplateInspector", []);
 
   app.controller("LeapController", [
-    "$scope", "Leap", "$rootScope", function($scope, Leap, $rootScope) {
-      $scope.hands = [];
+    "$scope", "Leap", "$rootScope", '$compile', function($scope, Leap, $rootScope, $compile) {
       $scope.heightOffset = 0;
-      $scope.paused = false;
       $scope.working = false;
       $scope.hud = true;
+      $scope.hand_elements = {};
       $scope.keypress = function(event) {
         switch (event.keyCode) {
           case 's'.charCodeAt(0):
           case 'p'.charCodeAt(0):
             Leap.paused = !Leap.paused;
-            $rootScope.$broadcast('paused', Leap.paused);
-            break;
+            return $rootScope.$broadcast('paused', Leap.paused);
           case 'h'.charCodeAt(0):
             $scope.hud = !$scope.hud;
-            $rootScope.$broadcast('hud', $scope.hud);
+            return $rootScope.$broadcast('hud', $scope.hud);
         }
-        return $scope.style = function() {
-          return console.log('style controller called');
-        };
       };
+      Leap.on('foundHand', function(id) {
+        console.log('found hand');
+        $scope.hand_elements[id] = angular.element("<div data-hand='" + id + "' class='hand'></div>");
+        angular.element(document.body).append($scope.hand_elements[id]);
+        return $compile($scope.hand_elements[id])($scope);
+      });
+      Leap.on('lostHand', function(id) {
+        console.log('lost hand');
+        return $scope.hand_elements[id].remove();
+      });
       Leap.on("frame", function() {
         if (Leap.paused) {
           return;
@@ -33,7 +38,6 @@
           return;
         }
         $scope.working = true;
-        $scope.hands = Leap.lastValidFrame.hands;
         $scope.$digest();
         return $scope.working = false;
       });

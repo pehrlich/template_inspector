@@ -11,7 +11,12 @@
      "scripts": ["background.js"]
    },
   "content_scripts": [{
-    "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*"],
-    "js": ["content_script.js", "leap.js"]
+    "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*", "local.leapmotion/*"],
+    "css": ["css/main.css"],
+    "js": [
+      "js/lib/angular.js", "js/lib/leap.js",
+      "js/core_ext.js", "js/app.js","js/directives.js", "js/factories.js",
+      "content_script.js"
+    ]
   }]
 }

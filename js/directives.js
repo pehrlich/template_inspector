@@ -17,15 +17,22 @@
     'Leap', function(Leap) {
       return {
         restrict: 'A',
+        scope: {
+          id: '=hand'
+        },
         link: function(scope, elem, attrs) {
           scope.open = void 0;
           scope.old_open_percent = void 0;
-          scope.$watch('hands', function(newHands, oldHands) {
-            if (!(scope.hand = newHands[0])) {
-              return;
+          scope.$watch(function() {
+            return Leap.lastValidFrame.hands;
+          }, function(newHands, oldHands) {
+            if (newHands.length) {
+              if (!(scope.hand = newHands.getById(scope.id))) {
+                return;
+              }
+              scope.setPosition();
+              return scope.setOpenGesture();
             }
-            scope.setPosition();
-            return scope.setOpenGesture();
           });
           scope.setOpenGesture = function() {
             var new_open_percent;
@@ -44,6 +51,7 @@
             }
           };
           return scope.setPosition = function() {
+            console.log('set position');
             elem[0].style.left = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale) + "px";
             return elem[0].style.top = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px";
           };

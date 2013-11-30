@@ -17,20 +17,27 @@ open_gesture_contants = {
 app.directive('hand', ['Leap', (Leap)->
   {
   restrict: 'A',
+  scope:{
+    id: '=hand',
+  },
   link: (scope, elem, attrs)->
-
     scope.open = undefined
     scope.old_open_percent = undefined
 
-    scope.$watch 'hands', (newHands, oldHands)->
-      return unless scope.hand = newHands[0]
+    scope.$watch ()->
+      Leap.lastValidFrame.hands
+    , (newHands, oldHands)->
+      if newHands.length
+        return unless scope.hand = newHands.getById(scope.id)
 
-      scope.setPosition()
-      scope.setOpenGesture()
+        scope.setPosition()
+        scope.setOpenGesture()
 
 
     scope.setOpenGesture = ->
-      new_open_percent = Math.round( (Math.abs(scope.hand.roll()) - open_gesture_contants.min_tip) / (open_gesture_contants.max_tip - open_gesture_contants.min_tip) * 100 )
+      new_open_percent = Math.round(
+        (Math.abs(scope.hand.roll()) - open_gesture_contants.min_tip) / (open_gesture_contants.max_tip - open_gesture_contants.min_tip) * 100
+      )
 
       if new_open_percent != scope.old_open_percent
         scope.old_open_percent = new_open_percent
@@ -45,6 +52,7 @@ app.directive('hand', ['Leap', (Leap)->
           scope.$emit('open', scope.hand)
 
     scope.setPosition = ->
+      console.log 'set position'
       elem[0].style.left = (document.body.offsetWidth / 2) +
       (scope.hand.palmPosition[0] * position_constants.scale) + "px"
       elem[0].style.top = (document.body.offsetHeight / 2) +
