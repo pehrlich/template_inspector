@@ -41,12 +41,17 @@
         $scope.$digest();
         return $scope.working = false;
       });
-      $scope.$on('open', function(scope, hand) {
-        console.log('open', hand);
-        return Template.open(document.elementFromPoint(scope.x, scope.y));
+      $scope.$on('open', function(event, handElement) {
+        var originalZ, topmostElement;
+        console.log('open hand', event.targetScope.hand.id);
+        originalZ = handElement.style.zIndex;
+        handElement.style.zIndex = -1;
+        topmostElement = document.elementFromPoint(parseInt(event.targetScope.x), parseInt(event.targetScope.y));
+        handElement.style.zIndex = originalZ;
+        return Template.open(topmostElement);
       });
-      return $scope.$on('close', function(scope, hand) {
-        return console.log('close', data);
+      return $scope.$on('close', function(event) {
+        return console.log('close hand', event.targetScope.hand.id);
       });
     }
   ]);

@@ -52,11 +52,11 @@ app.directive('hand', ['Leap', (Leap)->
 
         if scope.open && new_open_percent < open_gesture_contants.tips_at
           scope.open = false
-          scope.$emit('close', scope.hand)
+          scope.$emit('close')
 
         if !scope.open && new_open_percent >= open_gesture_contants.tips_at
           scope.open = true
-          scope.$emit('open', scope.hand)
+          scope.$emit('open', elem[0])
 
     scope.setPosition = ->
       elem[0].style.left = scope.x = (document.body.offsetWidth / 2) +

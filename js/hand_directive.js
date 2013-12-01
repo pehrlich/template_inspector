@@ -45,11 +45,11 @@
               scope.$emit('openPercent', new_open_percent);
               if (scope.open && new_open_percent < open_gesture_contants.tips_at) {
                 scope.open = false;
-                scope.$emit('close', scope.hand);
+                scope.$emit('close');
               }
               if (!scope.open && new_open_percent >= open_gesture_contants.tips_at) {
                 scope.open = true;
-                return scope.$emit('open', scope.hand);
+                return scope.$emit('open', elem[0]);
               }
             }
           };

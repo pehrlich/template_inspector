@@ -40,12 +40,18 @@ app.controller "LeapController", ["$scope", "Leap", "Template", "$rootScope", '$
     $scope.working = false
 
 
-  $scope.$on 'open', (scope, hand)->
-    console.log 'open', hand
-    Template.open document.elementFromPoint( scope.x, scope.y );
+  $scope.$on 'open', (event, handElement)->
+    console.log 'open hand', event.targetScope.hand.id
 
+    # Because the hand is above everything, we do a clever trick to get the second-topmost element
+    # if this is ever not good enough: http://neverfear.org/blog/view/36/JavaScript_tip_How_to_find_the_document_elements_that_intersect_at_a_certain_coordinate
+    originalZ = handElement.style.zIndex
+    handElement.style.zIndex = -1
+    topmostElement = document.elementFromPoint( parseInt(event.targetScope.x), parseInt(event.targetScope.y) )
+    handElement.style.zIndex = originalZ
 
+    Template.open topmostElement
 
-  $scope.$on 'close', (scope, hand)->
-    console.log 'close', data
+  $scope.$on 'close', (event)->
+    console.log 'close hand', event.targetScope.hand.id
 ]
