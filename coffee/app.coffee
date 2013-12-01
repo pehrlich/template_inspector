@@ -50,7 +50,7 @@ app.controller "LeapController", ["$scope", "Leap", "Template", "$rootScope", '$
     topmostElement = document.elementFromPoint( parseInt(event.targetScope.x), parseInt(event.targetScope.y) )
     handElement.style.zIndex = originalZ
 
-    Template.open topmostElement
+    Template.open topmostElement if topmostElement
 
   $scope.$on 'close', (event)->
     console.log 'close hand', event.targetScope.hand.id

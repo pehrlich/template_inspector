@@ -38,7 +38,8 @@
           var path;
           if (path = object.template_for(element)) {
             console.log('setting location', "x-mine://open?file=" + path);
-            return window.location = "x-mine://open?file=" + path;
+            window.location.assign("x-mine://open?file=" + path);
+            return window.location.assign("#");
           }
         }
       };

@@ -35,7 +35,10 @@ app.factory 'Template', [->
     open: (element)->
       if path = object.template_for(element)
         console.log 'setting location', "x-mine://open?file=#{path}"
-        window.location = "x-mine://open?file=#{path}"
+        window.location.assign "x-mine://open?file=#{path}"
+        # for some reason, subsquent calls to window.location.assign with an external protocol from a content script
+        # will fail unless padded.  Here we use a hash.
+        window.location.assign "#"
 
   }
   return object

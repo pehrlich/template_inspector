@@ -48,7 +48,9 @@
         handElement.style.zIndex = -1;
         topmostElement = document.elementFromPoint(parseInt(event.targetScope.x), parseInt(event.targetScope.y));
         handElement.style.zIndex = originalZ;
-        return Template.open(topmostElement);
+        if (topmostElement) {
+          return Template.open(topmostElement);
+        }
       });
       return $scope.$on('close', function(event) {
         return console.log('close hand', event.targetScope.hand.id);
