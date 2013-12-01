@@ -5,24 +5,7 @@
 
 console.log('Template Inspector loading')
 
+// what happens if there is already angular on this page?
+// todo: reduce scope.
 angular.element(document.body).attr('data-ng-controller', 'LeapController').attr('data-ng-keypress', 'keypress($event)')
 angular.bootstrap(document.body, ['TemplateInspector'])
-//
-//window.path = undefined;
-//
-//// http://developer.chrome.com/extensions/contextMenus.html
-//document.addEventListener("contextmenu", function (event) {
-////  var indicator = closestTemplateIndicator(event.target);
-////  window.path = indicator.substringData(14, 256);
-//
-//  chrome.runtime.sendMessage({enabled: !!window.path});
-//});
-//
-//chrome.runtime.onMessage.addListener(
-//  function (request, sender, sendResponse) {
-//    if (request.event == "click"){
-//      window.location = "x-mine://open?file=" + window.path;
-//    };
-//  }
-//);
-//

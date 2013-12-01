@@ -1,12 +1,14 @@
 window.app = angular.module("TemplateInspector", [])
 
-app.controller "LeapController", ["$scope", "Leap", "Template", "$rootScope", '$compile', ($scope, Leap, Template, $rootScope, $compile) ->
+app.controller "LeapController", ["$scope", "Leap", "Template", "Menu", "$rootScope", '$compile', ($scope, Leap, Template, Menu, $rootScope, $compile) ->
   $scope.heightOffset = 0
   $scope.working = false
   $scope.hud = true
 
   # as we don't have access to the DOM in a chrome extension content script, we track appended elements here.
   $scope.hand_elements = {}
+
+  Menu.initialize()
 
   $scope.keypress = (event) ->
     switch event.keyCode

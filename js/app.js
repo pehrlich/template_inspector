@@ -3,11 +3,12 @@
   window.app = angular.module("TemplateInspector", []);
 
   app.controller("LeapController", [
-    "$scope", "Leap", "Template", "$rootScope", '$compile', function($scope, Leap, Template, $rootScope, $compile) {
+    "$scope", "Leap", "Template", "Menu", "$rootScope", '$compile', function($scope, Leap, Template, Menu, $rootScope, $compile) {
       $scope.heightOffset = 0;
       $scope.working = false;
       $scope.hud = true;
       $scope.hand_elements = {};
+      Menu.initialize();
       $scope.keypress = function(event) {
         switch (event.keyCode) {
           case 's'.charCodeAt(0):

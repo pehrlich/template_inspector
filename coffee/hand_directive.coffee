@@ -17,7 +17,8 @@ open_gesture_contants = {
 app.directive('hand', ['Leap', (Leap)->
   {
   restrict: 'A',
-  scope:{
+  scope:
+  {
     id: '=hand',
   },
   link: (scope, elem, attrs)->
