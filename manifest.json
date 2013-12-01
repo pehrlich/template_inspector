@@ -14,7 +14,7 @@
     "css": ["css/main.css"],
     "js": [
       "js/lib/angular.js", "js/lib/leap.js",
-      "js/core_ext.js", "js/app.js","js/directives.js", "js/factories.js",
+      "js/core_ext.js", "js/app.js","js/hand_directive.js", "js/leap_factory.js", "js/template_factory.js",
       "content_script.js"
     ]
   }]

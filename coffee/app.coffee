@@ -1,6 +1,6 @@
 window.app = angular.module("TemplateInspector", [])
 
-app.controller "LeapController", ["$scope", "Leap", "$rootScope", '$compile', ($scope, Leap, $rootScope, $compile) ->
+app.controller "LeapController", ["$scope", "Leap", "Template", "$rootScope", '$compile', ($scope, Leap, Template, $rootScope, $compile) ->
   $scope.heightOffset = 0
   $scope.working = false
   $scope.hud = true
@@ -40,9 +40,12 @@ app.controller "LeapController", ["$scope", "Leap", "$rootScope", '$compile', ($
     $scope.working = false
 
 
-  $scope.$on 'open', (scope, data)->
-    console.log 'open', data
+  $scope.$on 'open', (scope, hand)->
+    console.log 'open', hand
+    Template.open document.elementFromPoint( scope.x, scope.y );
 
-  $scope.$on 'close', (scope, data)->
+
+
+  $scope.$on 'close', (scope, hand)->
     console.log 'close', data
 ]

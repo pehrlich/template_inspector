@@ -54,8 +54,8 @@
             }
           };
           return scope.setPosition = function() {
-            elem[0].style.left = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale) + "px";
-            return elem[0].style.top = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px";
+            elem[0].style.left = scope.x = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale) + "px";
+            return elem[0].style.top = scope.y = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px";
           };
         }
       };

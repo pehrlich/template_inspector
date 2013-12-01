@@ -3,7 +3,7 @@
   window.app = angular.module("TemplateInspector", []);
 
   app.controller("LeapController", [
-    "$scope", "Leap", "$rootScope", '$compile', function($scope, Leap, $rootScope, $compile) {
+    "$scope", "Leap", "Template", "$rootScope", '$compile', function($scope, Leap, Template, $rootScope, $compile) {
       $scope.heightOffset = 0;
       $scope.working = false;
       $scope.hud = true;
@@ -41,10 +41,11 @@
         $scope.$digest();
         return $scope.working = false;
       });
-      $scope.$on('open', function(scope, data) {
-        return console.log('open', data);
+      $scope.$on('open', function(scope, hand) {
+        console.log('open', hand);
+        return Template.open(document.elementFromPoint(scope.x, scope.y));
       });
-      return $scope.$on('close', function(scope, data) {
+      return $scope.$on('close', function(scope, hand) {
         return console.log('close', data);
       });
     }
