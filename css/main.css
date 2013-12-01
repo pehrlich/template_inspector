@@ -1,9 +1,10 @@
-body .hand {
-  width: 100;
+.hand {
+  width: 100px;
   height: 100px;
   position: absolute;
   margin-left: -50px;
   margin-top: -50px;
+  z-index: 910;
 
   background: black;
   border-radius: 100%;

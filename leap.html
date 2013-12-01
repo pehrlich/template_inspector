@@ -8,12 +8,7 @@
   <script type="text/javascript" src="js/directives.js"></script>
   <link href="css/main.css" rel="stylesheet">
 </head>
-
-<body ng-app="TemplateInspector" data-ng-controller="LeapController" ng-keypress="keypress($event)">
-
-
-<!-- <div ng-repeat="hand in hands" hand="hand" class="hand"></div> -->
-<!-- todo: properly handle multiple hands, keep track of ids, and so on. -->
+<body>
 
 
 <h2>Stuff Goes here</h2>
@@ -46,4 +41,8 @@
 </table>
 
 </body>
+<script type="text/javascript">
+  angular.element(document.body).attr('data-ng-controller', 'LeapController').attr('data-ng-keypress', 'keypress($event)')
+  angular.bootstrap(document.body, ['TemplateInspector'])
+</script>
 </html>

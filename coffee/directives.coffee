@@ -28,10 +28,7 @@ app.directive('hand', ['Leap', (Leap)->
     # For whatever reason, Angular isin't properly destroying this scope when the element is removed.
     # we trigger it manually here.
     elem.bind '$destroy', ->
-      console.log 'element destroyed'
       scope.$destroy()
-    scope.$on '$destroy', ->
-      console.log 'scope destroyed'
 
 
     scope.$watch ()->

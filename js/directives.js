@@ -24,11 +24,7 @@
           scope.open = void 0;
           scope.old_open_percent = void 0;
           elem.bind('$destroy', function() {
-            console.log('element destroyed');
             return scope.$destroy();
-          });
-          scope.$on('$destroy', function() {
-            return console.log('scope destroyed');
           });
           scope.$watch(function() {
             return Leap.lastValidFrame.hands;

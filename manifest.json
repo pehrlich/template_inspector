@@ -1,6 +1,5 @@
 {
   "manifest_version": 2,
-
   "name": "Template Inspector",
   "description": "Allows you to right click -> 'Inspect Template'.",
   "version": "0.1",
@@ -11,7 +10,7 @@
      "scripts": ["background.js"]
    },
   "content_scripts": [{
-    "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*", "local.leapmotion/*"],
+    "matches": ["http://127.0.0.1/*", "http://0.0.0.0/*", "http://localhost/*", "http://local.leapmotion/*"],
     "css": ["css/main.css"],
     "js": [
       "js/lib/angular.js", "js/lib/leap.js",
