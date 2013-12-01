@@ -17,8 +17,7 @@ open_gesture_contants = {
 app.directive('hand', ['Leap', (Leap)->
   {
   restrict: 'A',
-  scope:
-  {
+  scope: {
     id: '=hand',
   },
   link: (scope, elem, attrs)->
@@ -57,12 +56,24 @@ app.directive('hand', ['Leap', (Leap)->
 
         if !scope.open && new_open_percent >= open_gesture_contants.tips_at
           scope.open = true
-          scope.$emit('open', elem[0])
+          scope.$emit('open')
 
     scope.setPosition = ->
-      elem[0].style.left = scope.x = (document.body.offsetWidth / 2) +
-      (scope.hand.palmPosition[0] * position_constants.scale) + "px"
-      elem[0].style.top = scope.y = (document.body.offsetHeight / 2) +
-      ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px"
+      scope.x = (document.body.offsetWidth / 2) +
+            (scope.hand.palmPosition[0] * position_constants.scale)
+      scope.y = (document.body.offsetHeight / 2) +
+            ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1)
+
+      elem[0].style.left = "#{scope.x}px"
+      elem[0].style.top = "#{scope.y}px"
+
+    scope.topMostElement = ->
+      # Because the hand is above everything, we do a clever trick to get the second-topmost element
+      # if this is ever not good enough: http://neverfear.org/blog/view/36/JavaScript_tip_How_to_find_the_document_elements_that_intersect_at_a_certain_coordinate
+      originalZ = elem[0].style.zIndex
+      elem[0].style.zIndex = -1
+      topMostElement = document.elementFromPoint( scope.x, scope.y )
+      elem[0].style.zIndex = originalZ
+      topMostElement
   }
 ])

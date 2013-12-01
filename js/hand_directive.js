@@ -49,13 +49,23 @@
               }
               if (!scope.open && new_open_percent >= open_gesture_contants.tips_at) {
                 scope.open = true;
-                return scope.$emit('open', elem[0]);
+                return scope.$emit('open');
               }
             }
           };
-          return scope.setPosition = function() {
-            elem[0].style.left = scope.x = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale) + "px";
-            return elem[0].style.top = scope.y = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1) + "px";
+          scope.setPosition = function() {
+            scope.x = (document.body.offsetWidth / 2) + (scope.hand.palmPosition[0] * position_constants.scale);
+            scope.y = (document.body.offsetHeight / 2) + ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1);
+            elem[0].style.left = "" + scope.x + "px";
+            return elem[0].style.top = "" + scope.y + "px";
+          };
+          return scope.topMostElement = function() {
+            var originalZ, topMostElement;
+            originalZ = elem[0].style.zIndex;
+            elem[0].style.zIndex = -1;
+            topMostElement = document.elementFromPoint(scope.x, scope.y);
+            elem[0].style.zIndex = originalZ;
+            return topMostElement;
           };
         }
       };

@@ -42,16 +42,30 @@
         $scope.$digest();
         return $scope.working = false;
       });
-      $scope.$on('open', function(event, handElement) {
-        var originalZ, topmostElement;
-        console.log('open hand', event.targetScope.hand.id);
-        originalZ = handElement.style.zIndex;
-        handElement.style.zIndex = -1;
-        topmostElement = document.elementFromPoint(parseInt(event.targetScope.x), parseInt(event.targetScope.y));
-        handElement.style.zIndex = originalZ;
-        if (topmostElement) {
-          return Template.open(topmostElement);
+      $scope.cachedTopMostElement = void 0;
+      $scope.$on('openPercent', function(event, percentage) {
+        var topMostElement;
+        if (!$scope.cachedTopMostElement && (percentage > 20)) {
+          if (!(topMostElement = event.targetScope.topMostElement())) {
+            return;
+          }
+          console.log('saving element', percentage, topMostElement);
+          return $scope.cachedTopMostElement = topMostElement;
+        } else if ($scope.cachedTopMostElement && percentage < 20) {
+          $scope.cachedTopMostElement = void 0;
+          return console.log('clearing element', percentage);
         }
+      });
+      $scope.$on('open', function(event) {
+        var topMostElement;
+        console.log('open hand', event.targetScope.hand.id);
+        if (!(topMostElement = $scope.cachedTopMostElement || event.targetScope.topMostElement())) {
+          return;
+        }
+        if ($scope.cachedTopMostElement && ($scope.cachedTopMostElement !== event.targetScope.topMostElement())) {
+          console.log('good thing we saved it!');
+        }
+        return Template.open(topMostElement);
       });
       return $scope.$on('close', function(event) {
         return console.log('close hand', event.targetScope.hand.id);

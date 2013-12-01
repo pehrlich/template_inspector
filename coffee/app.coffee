@@ -41,18 +41,29 @@ app.controller "LeapController", ["$scope", "Leap", "Template", "Menu", "$rootSc
     $scope.$digest()
     $scope.working = false
 
+  # we prevent the element from changing too much on roll.
+  $scope.cachedTopMostElement = undefined
 
-  $scope.$on 'open', (event, handElement)->
+  $scope.$on 'openPercent', (event, percentage) ->
+
+    if !$scope.cachedTopMostElement && (percentage > 20)
+      return unless topMostElement = event.targetScope.topMostElement()
+      console.log('saving element', percentage, topMostElement)
+      $scope.cachedTopMostElement = topMostElement
+
+    else if $scope.cachedTopMostElement && percentage < 20
+      $scope.cachedTopMostElement = undefined
+      console.log('clearing element', percentage)
+
+
+  $scope.$on 'open', (event)->
     console.log 'open hand', event.targetScope.hand.id
+    return unless topMostElement = ($scope.cachedTopMostElement || event.targetScope.topMostElement())
 
-    # Because the hand is above everything, we do a clever trick to get the second-topmost element
-    # if this is ever not good enough: http://neverfear.org/blog/view/36/JavaScript_tip_How_to_find_the_document_elements_that_intersect_at_a_certain_coordinate
-    originalZ = handElement.style.zIndex
-    handElement.style.zIndex = -1
-    topmostElement = document.elementFromPoint( parseInt(event.targetScope.x), parseInt(event.targetScope.y) )
-    handElement.style.zIndex = originalZ
+    if $scope.cachedTopMostElement && ($scope.cachedTopMostElement != event.targetScope.topMostElement())
+      console.log 'good thing we saved it!'
 
-    Template.open topmostElement if topmostElement
+    Template.open topMostElement
 
   $scope.$on 'close', (event)->
     console.log 'close hand', event.targetScope.hand.id
