@@ -13,3 +13,24 @@ with the follwing syntax:
 ```
 
 Note that HTML comments can not be nested.  Be sure that you have no multiline HTML comments surrounding render calls.
+
+
+### Rails compatibility:
+
+
+Add this snippet to your initializers directory:
+
+```ruby
+module ActionView
+  class PartialRenderer < AbstractRenderer
+
+    def render_partial_with_annotation
+      identifier = @template ? @template.identifier : @path
+      "<!--begin partial #{identifier}-->#{render_partial_without_annotation}<!--end partial-->".html_safe
+    end
+
+    alias_method_chain :render_partial, :annotation
+
+  end
+end
+```
