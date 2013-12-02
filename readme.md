@@ -14,6 +14,10 @@ with the follwing syntax:
 
 Note that HTML comments can not be nested.  Be sure that you have no multiline HTML comments surrounding render calls.
 
+### Leap compatibility:
+
+If you have a leap set up, this plugin will recognize hand position as a cursor, and allow you to tilt your hand in a
+"turning over a rock"-like gesture, which will open your editor at the desired location.
 
 ### Rails compatibility:
 
