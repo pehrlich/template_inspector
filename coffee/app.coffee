@@ -30,6 +30,7 @@ app.controller "LeapController", ["$scope", "Leap", "Template", "Menu", "$rootSc
     console.log 'lost hand', id
     $scope.hand_elements[id].remove()
 
+  # updates the HUD and hand directives
   Leap.on "frame", ->
     return  if Leap.paused
 

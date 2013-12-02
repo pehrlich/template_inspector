@@ -30,7 +30,6 @@ app.directive('hand', ['Leap', (Leap)->
     elem.bind '$destroy', ->
       scope.$destroy()
 
-
     scope.$watch ()->
       Leap.lastValidFrame.hands
     , (newHands, oldHands)->
