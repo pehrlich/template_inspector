@@ -7,5 +7,5 @@ console.log('Template Inspector loading')
 
 // what happens if there is already angular on this page?
 // todo: reduce scope.
-angular.element(document.body).attr('data-ng-controller', 'LeapController').attr('data-ng-keypress', 'keypress($event)')
+angular.element(document.body).attr('data-ng-controller', 'Leap').attr('data-ng-keypress', 'keypress($event)')
 angular.bootstrap(document.body, ['TemplateInspector'])

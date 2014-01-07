@@ -1,70 +1,50 @@
-position_constants = {
-  scale: 8,
-  vertial_offset: -150
-}
-
-# apparently leapjs won't let us know if it's a right or left hand we're working with.
-# we may have accidental gestures.
-# for now, we look at all the numbers absolutely
-# describing a gesture we'll call "open"
-# est range, left hand: -0.3 for flat, -1.3 for vertical?
-open_gesture_contants = {
-  tips_at: 50
-  min_tip: 0.3
-  max_tip: 1.3
-}
-
-app.directive('hand', ['Leap', (Leap)->
+app.directive('hand', ['LeapController', 'Template',  (LeapController, Template)->
   {
   restrict: 'A',
   scope: {
     id: '=hand',
   },
   link: (scope, elem, attrs)->
-    scope.open = undefined
-    scope.old_open_percent = undefined
-
-
     # For whatever reason, Angular isin't properly destroying this scope when the element is removed.
     # we trigger it manually here.
     elem.bind '$destroy', ->
       scope.$destroy()
 
     scope.$watch ()->
-      Leap.lastValidFrame.hands
+      LeapController.lastValidFrame.hands
     , (newHands, oldHands)->
       if newHands.length
-        return unless scope.hand = newHands.getById(scope.id)
+        return unless hand = newHands.getById(scope.id)
 
-        scope.setPosition()
-        scope.setOpenGesture()
+        elem[0].style.left = "#{hand.screenPosition.x}px"
+        elem[0].style.top = "#{hand.screenPosition.y}px"
 
 
-    scope.setOpenGesture = ->
-      new_open_percent = Math.round(
-        (Math.abs(scope.hand.roll()) - open_gesture_contants.min_tip) / (open_gesture_contants.max_tip - open_gesture_contants.min_tip) * 100
-      )
+    # we prevent the element from changing too much on roll.
+    scope.cachedTopMostElement = undefined
 
-      if new_open_percent != scope.old_open_percent
-        scope.old_open_percent = new_open_percent
-        scope.$emit('openPercent', new_open_percent)
+    # hand.getById(id).on 'openPercent', (percentage)
+    LeapController.on 'handOpenPercent', (hand_id, percentage) ->
+      return unless hand_id == scope.id
+        if !scope.cachedTopMostElement && (percentage > 20)
+          return unless topMostElement = scope.topMostElement()
+          console.log('saving element', percentage, topMostElement)
+          scope.cachedTopMostElement = topMostElement
 
-        if scope.open && new_open_percent < open_gesture_contants.tips_at
-          scope.open = false
-          scope.$emit('close')
+        else if scope.cachedTopMostElement && percentage < 20
+          scope.cachedTopMostElement = undefined
+          console.log('clearing element', percentage)
 
-        if !scope.open && new_open_percent >= open_gesture_contants.tips_at
-          scope.open = true
-          scope.$emit('open')
+    LeapController.on 'handOpen', (hand_id)->
+      return unless hand_id == scope.id
+      console.log 'open hand', hand_id
 
-    scope.setPosition = ->
-      scope.x = (document.body.offsetWidth / 2) +
-            (scope.hand.palmPosition[0] * position_constants.scale)
-      scope.y = (document.body.offsetHeight / 2) +
-            ((scope.hand.palmPosition[1] + position_constants.vertial_offset) * position_constants.scale * -1)
+      return unless topMostElement = (scope.cachedTopMostElement || scope.topMostElement())
 
-      elem[0].style.left = "#{scope.x}px"
-      elem[0].style.top = "#{scope.y}px"
+  #    if $scope.cachedTopMostElement && ($scope.cachedTopMostElement != event.targetScope.topMostElement())
+        # console.log 'good thing we saved it!'
+
+      Template.open topMostElement
 
     scope.topMostElement = ->
       # Because the hand is above everything, we do a clever trick to get the second-topmost element

@@ -288,6 +288,9 @@ var Controller = module.exports = function(opts) {
   }
   this.connection = new this.connectionType(opts);
   this.setupConnectionEvents();
+
+  // hacked in by peter
+  this.setupServices()
 }
 
 Controller.prototype.gesture = function(type, cb) {

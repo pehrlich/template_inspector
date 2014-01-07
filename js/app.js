@@ -2,8 +2,8 @@
 (function() {
   window.app = angular.module("TemplateInspector", []);
 
-  app.controller("LeapController", [
-    "$scope", "Leap", "Template", "Menu", "$rootScope", '$compile', function($scope, Leap, Template, Menu, $rootScope, $compile) {
+  app.controller("Leap", [
+    "$scope", "LeapController", "Template", "Menu", "$rootScope", '$compile', function($scope, LeapController, Template, Menu, $rootScope, $compile) {
       $scope.heightOffset = 0;
       $scope.working = false;
       $scope.hud = true;
@@ -13,25 +13,25 @@
         switch (event.keyCode) {
           case 's'.charCodeAt(0):
           case 'p'.charCodeAt(0):
-            Leap.paused = !Leap.paused;
-            return $rootScope.$broadcast('paused', Leap.paused);
+            LeapController.paused = !LeapController.paused;
+            return $rootScope.$broadcast('paused', LeapController.paused);
           case 'h'.charCodeAt(0):
             $scope.hud = !$scope.hud;
             return $rootScope.$broadcast('hud', $scope.hud);
         }
       };
-      Leap.on('foundHand', function(id) {
+      LeapController.on('foundHand', function(id) {
         console.log('found hand', id);
         $scope.hand_elements[id] = angular.element("<div data-hand='" + id + "' class='hand'></div>");
         angular.element(document.body).append($scope.hand_elements[id]);
         return $compile($scope.hand_elements[id])($scope);
       });
-      Leap.on('lostHand', function(id) {
+      LeapController.on('lostHand', function(id) {
         console.log('lost hand', id);
         return $scope.hand_elements[id].remove();
       });
-      Leap.on("frame", function() {
-        if (Leap.paused) {
+      LeapController.on("frame", function(frame) {
+        if (LeapController.paused) {
           return;
         }
         if ($scope.working) {
@@ -39,37 +39,11 @@
           return;
         }
         $scope.working = true;
+        $scope.hands = frame.hands;
         $scope.$digest();
         return $scope.working = false;
       });
-      $scope.cachedTopMostElement = void 0;
-      $scope.$on('openPercent', function(event, percentage) {
-        var topMostElement;
-        if (!$scope.cachedTopMostElement && (percentage > 20)) {
-          if (!(topMostElement = event.targetScope.topMostElement())) {
-            return;
-          }
-          console.log('saving element', percentage, topMostElement);
-          return $scope.cachedTopMostElement = topMostElement;
-        } else if ($scope.cachedTopMostElement && percentage < 20) {
-          $scope.cachedTopMostElement = void 0;
-          return console.log('clearing element', percentage);
-        }
-      });
-      $scope.$on('open', function(event) {
-        var topMostElement;
-        console.log('open hand', event.targetScope.hand.id);
-        if (!(topMostElement = $scope.cachedTopMostElement || event.targetScope.topMostElement())) {
-          return;
-        }
-        if ($scope.cachedTopMostElement && ($scope.cachedTopMostElement !== event.targetScope.topMostElement())) {
-          console.log('good thing we saved it!');
-        }
-        return Template.open(topMostElement);
-      });
-      return $scope.$on('close', function(event) {
-        return console.log('close hand', event.targetScope.hand.id);
-      });
+      return LeapController.on('handClose', function(event) {});
     }
   ]);
 

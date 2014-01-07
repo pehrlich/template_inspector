@@ -1,19 +1,77 @@
 <html>
 <head>
+  <title>Template Inspector Testbed</title>
+  <script type="text/javascript" src="js/lib/jquery-2.0.3.js"></script>
   <script type="text/javascript" src="js/lib/angular.js"></script>
   <script type="text/javascript" src="js/lib/leap.js"></script>
+  <script type="text/javascript" src="js/ap_ext/_leap_core_ext.js"></script>
+  <script type="text/javascript" src="js/ap_ext/hand_entry_events.js"></script>
+  <script type="text/javascript" src="js/ap_ext/hand_open.js"></script>
+  <script type="text/javascript" src="js/ap_ext/hand_position.js"></script>
+  <script type="text/javascript" src="js/ap_ext/hand_side.js"></script>
+
   <script type="text/javascript" src="js/core_ext.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/template_factory.js"></script>
   <script type="text/javascript" src="js/leap_factory.js"></script>
   <script type="text/javascript" src="js/hand_directive.js"></script>
   <script type="text/javascript" src="js/menu_factory.js"></script>
+
   <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
 
+<!-- this is automatically added by angular on the hand found event -->
+<!--<div class="hand" style="top: 300px; left: 260px;">-->
+  <!--<div style="display: inline-block; width: 250px; height: 250px;background: #ccc; position: fixed;"></div>-->
+<!--</div>-->
+
 
 <h2>Stuff Goes here</h2>
+
+<!--<div style="display: inline-block; width: 250px; height: 250px;background: #fff;"></div>-->
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non quam in nunc mollis viverra. In vitae gravida
+  turpis.
+  Aliquam et sem felis. Vestibulum euismod, mauris non elementum laoreet, augue neque volutpat odio, facilisis rutrum
+  nisi eros
+  blandit lectus. Nulla a erat at nunc malesuada varius quis vel massa. Nulla pharetra porttitor orci, eu pellentesque
+  nisi vestibulum vitae.
+  Duis condimentum varius eros at ultrices. <a href="/something">Duis fringilla</a> nulla imperdiet augue venenatis malesuada. Aenean posuere et
+  quam vel gravida. Duis non massa enim. Fusce nec mauris fringilla, hendrerit arcu ac, vehicula augue. Praesent
+  volutpat sapien sit amet urna elementum, at vulputate dolor dignissim. Duis rutrum venenatis felis, vitae cursus metus
+  pharetra nec. Mauris quis gravida nisi. Morbi dignissim sodales dui eget aliquam.
+</p>
+
+<p>
+  Nam vehicula fermentum sem, ut iaculis lectus lobortis eu. Sed vehicula a nisi non adipiscing. Curabitur ante erat,
+  congue id sapien vel, bibendum blandit diam. Sed orci nulla, vehicula a egestas non, accumsan id mauris. In varius
+  massa vel arcu ultricies mattis. Donec pulvinar quam vel quam aliquam fermentum. Quisque a adipiscing dui. Sed feugiat
+  diam et mollis consectetur. Nulla eget semper lectus, non tincidunt nulla. Morbi at vehicula orci. Vivamus id
+  scelerisque purus, quis commodo arcu. Pellentesque quis luctus leo, sed facilisis nulla. Curabitur iaculis augue quis
+  lorem imperdiet bibendum. Etiam ac arcu vitae augue cursus ultrices. Proin at ullamcorper nibh. Curabitur sed lacus ut
+  dui pellentesque tincidunt.
+</p>
+
+<p>
+  Mauris tristique quam a nibh auctor, a accumsan tortor sodales. Donec sed aliquam mi. Ut et lorem et libero
+  sollicitudin suscipit in ultricies dolor. Duis condimentum nisi risus, et aliquet massa tincidunt in. Mauris ut
+  aliquam justo, elementum consequat orci. <a href="/something_else">Ut lacinia</a> nisi at felis laoreet adipiscing eget a velit. Nulla scelerisque
+  turpis quis facilisis viverra. Pellentesque eget auctor dolor, eu cursus lectus. Nunc ultricies massa ac ipsum
+  malesuada porta fermentum sit amet urna. In convallis eget diam vitae bibendum. Nam pulvinar cursus viverra.
+</p>
+
+<p>
+  Morbi sem magna, malesuada a erat vel, vestibulum congue erat. Integer eu rhoncus nulla, vel malesuada eros. Nunc ac
+  blandit nisl, eu placerat ligula. Aenean vehicula, tellus quis condimentum tristique, est nibh condimentum nisi, sit
+  amet ornare urna velit eu ante. Suspendisse feugiat, tortor sit amet imperdiet aliquam, augue lorem tempor augue, et
+  elementum tortor tellus id eros. Pellentesque condimentum vitae metus a placerat. Nunc non massa velit. In libero
+  odio, tristique sed hendrerit a, commodo ac massa. Nulla et varius eros, sed commodo velit. Proin eget accumsan lorem,
+  pretium suscipit leo. Suspendisse potenti. Etiam dignissim velit sit amet dapibus varius. Cras in accumsan nisi.
+  Nullam commodo libero vitae velit pretium, at adipiscing sapien ultricies. Quisque in vestibulum purus, nec tincidunt
+  erat. Quisque sed dictum erat.
+</p>
 
 <p>
   etc
@@ -26,8 +84,6 @@
     </td>
     <td>
       {{hands.length}} {{Leap.paused}}
-      <br>
-      {{palmPosition}}
     </td>
   </tr>
   <tr ng-repeat="hand in hands">
@@ -35,16 +91,31 @@
       {{hand.id}}
     </td>
     <td>
-      {{hand.palmPosition}}
-      <br>
-      {{[hand.pitch().toPrecision(2), hand.roll().toPrecision(2), hand.yaw().toPrecision(2)]}}
+      <table class="hand-data">
+        <tr>
+          <td>x</td>
+          <td>{{hand.palmPosition[0].toPrecision(3)}}</td>
+          <td>y</td>
+          <td>{{hand.palmPosition[1].toPrecision(3)}}</td>
+          <td>z</td>
+          <td>{{hand.palmPosition[2].toPrecision(3)}}</td>
+        </tr>
+        <tr>
+          <td>pitch</td>
+          <td>{{hand.pitch().toPrecision(2)}}</td>
+          <td>roll</td>
+          <td>{{hand.roll().toPrecision(2)}}</td>
+          <td>yaw</td>
+          <td>{{hand.yaw().toPrecision(2)}}</td>
+        </tr>
+      </table>
     </td>
   </tr>
 </table>
 
 </body>
 <script type="text/javascript">
-  angular.element(document.body).attr('data-ng-controller', 'LeapController').attr('data-ng-keypress', 'keypress($event)')
+  angular.element(document.body).attr('data-ng-controller', 'Leap').attr('data-ng-keypress', 'keypress($event)')
   angular.bootstrap(document.body, ['TemplateInspector'])
 </script>
 </html>

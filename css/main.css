@@ -14,7 +14,17 @@
 }
 
 #data {
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   left: 10px;
+  background-color: white;
+}
+
+p {
+  width: 400px;
+  line-height: 1.5em;
+  font-size: 18px;
+}
+table.hand-data td{
+  width: 50px;
 }
